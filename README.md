@@ -1,3 +1,30 @@
+# Explanation
+
+* I have implemented workerPool but has violates foreign key constraint errors.
+probably we need priority for insert author. They are commented out.
+```
+// TODO I have implemented workerPool but has violates foreign key constraint errors.
+// probably we need priority for insert author
+//authorRepo.Migrations()
+//bookRepo.Migrations()
+//concurrency.InitializeInsertion(bookRepo, authorRepo) //has Errors
+```
+
+* I have read BookCsvLine from csv file. It also includes author name.
+```go
+type BookCsvLine struct {
+	Title     string
+	Author    string
+	Genre     string
+	Height    string
+	Publisher string
+}
+
+type BookCsvLines []BookCsvLine
+```
+
+
+
 # Homework 3 Week 4
 
 - `Book` ve `Author` bilgileri bir dosyadan okunacak ve DB'ye kayıt edilecek.
