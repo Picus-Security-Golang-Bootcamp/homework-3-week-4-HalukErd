@@ -1,10 +1,12 @@
 package book
 
 import (
+	"fmt"
 	"github.com/HalukErd/Week4Assignment/pkg"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"math"
+	"sync"
 )
 
 type BookRepo struct {
@@ -23,6 +25,17 @@ func (b *BookRepo) Migrations() {
 func (b *BookRepo) InsertSampleData(books Books) {
 	for _, book := range books {
 		b.db.Where(Book{Name: book.Name}).FirstOrCreate(&book)
+	}
+}
+
+func (b *BookRepo) InsertBook(jobs <-chan Book, results chan<- error, wg *sync.WaitGroup) {
+	defer wg.Done()
+
+	for book := range jobs {
+		fmt.Println("data to insert ---->>>> book's authorId:", book.AuthorID)
+		err := b.db.Where(Book{Name: book.Name}).FirstOrCreate(&book).Error
+
+		results <- err
 	}
 }
 
